@@ -1,0 +1,42 @@
+[
+  {
+    "nama": "anton",
+    "email": "anton@gmail.com",
+    "whatsapp": "082234546556",
+    "sekolah": "utdi",
+    "jurusan": "sistem informasi",
+    "posisi": "UI/UX Designer",
+    "cv": "https://web.whatsapp.com/",
+    "motivasi": "karena keren"
+  },
+  {
+    "nama": "rizam",
+    "email": "manajer@stockify.test",
+    "whatsapp": "085273097895",
+    "sekolah": "utdi",
+    "jurusan": "informatika",
+    "posisi": "Programmer",
+    "cv": "https://web.whatsapp.com/",
+    "motivasi": "karena keren"
+  },
+  {
+    "nama": "nia",
+    "email": "nia@gmail.com",
+    "whatsapp": "085273278834",
+    "sekolah": "ubb",
+    "jurusan": "multimedia",
+    "posisi": "Video Editor",
+    "cv": "https://web.whatsapp.com/",
+    "motivasi": "semoga kelak saya keterima dan akan membuktikannya"
+  },
+  {
+    "nama": "farnia rustika",
+    "email": "admin@app.com",
+    "whatsapp": "082234546556",
+    "sekolah": "stikes",
+    "jurusan": "sistem informasi",
+    "posisi": "Digital Marketing",
+    "cv": "https://web.whatsapp.com/",
+    "motivasi": "aplikasi keren"
+  }
+]

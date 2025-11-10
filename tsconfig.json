@@ -1,26 +1,37 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
+    /* ========================
+       🧩 OUTPUT DAN TARGET
+    ========================= */
+    "target": "es2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+
+    /* ========================
+       🧠 MODULE SYSTEM
+    ========================= */
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* ========================
+       ⚙️ STRICTNESS
+    ========================= */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+
+    /* ========================
+       💡 LAINNYA
+    ========================= */
+    "jsx": "react-jsx",
     "noEmit": true,
-    "jsx": "react-jsx"
+    "allowJs": true,
+    "checkJs": false
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "build"]
 }

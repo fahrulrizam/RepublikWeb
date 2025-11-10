@@ -1,0 +1,100 @@
+.about-section-container {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/* --- Animasi --- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Gradient Text --- */
+.text-gradient {
+  background: linear-gradient(90deg, #1a428a, #0d7377);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- Warna Utama --- */
+.text-primary,
+.btn-primary {
+  color: #1a428a !important;
+  border-color: #1a428a !important;
+}
+
+.btn-primary {
+  background-color: #1a428a !important;
+}
+
+.btn-primary:hover {
+  background-color: #112d59 !important;
+  border-color: #112d59 !important;
+}
+
+/* --- Gambar --- */
+.about-img {
+  border-radius: 12px !important;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.about-img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Card Styling --- */
+.info-box,
+.value-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px !important;
+  transition: all 0.3s ease;
+}
+.info-box:hover,
+.value-card:hover {
+  transform: translateY(-6px);
+  background: #f0f9ff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* --- List --- */
+.info-box ul,
+.list-program {
+  padding-left: 20px;
+  list-style: disc;
+}
+.info-box li,
+.list-program li {
+  margin-bottom: 6px;
+  color: #343a40;
+}
+
+/* --- CTA Button --- */
+.cta-button {
+  background-color: #ff8c42 !important;
+  border-color: #ff8c42 !important;
+  font-weight: 600;
+}
+.cta-button:hover {
+  background-color: #e57e3c !important;
+  border-color: #e57e3c !important;
+}
+
+/* --- Garis Pemisah --- */
+hr {
+  margin: 40px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* --- Responsif --- */
+@media (max-width: 768px) {
+  .about-section-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
