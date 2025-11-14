@@ -167,63 +167,73 @@ const FooterComponent = () => (
           </div>
         </Col>
 
-        {/* === KOLOM 5: NEWSLETTER === */}
-        <Col lg={2} md={6}>
-          <h5 className="footer-section-title">Newsletter</h5>
-          <p className="text-white-70 small">
-            Dapatkan update terbaru tentang program magang kami!
-          </p>
+       {/* === KOLOM 5: NEWSLETTER === */}
+<Col lg={2} md={6}>
+    <h5 className="footer-section-title">Newsletter</h5>
+    <p className="text-white-70 small">
+        Dapatkan update terbaru tentang program magang kami!
+    </p>
 
-          <Form
-            className="newsletter-form"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const email = e.target.email.value.trim();
-              if (!email) return alert("⚠️ Silakan masukkan email Anda.");
+    <Form
+        className="newsletter-form"
+        onSubmit={async (e) => {
+            e.preventDefault();
+            const email = e.target.email.value.trim();
+            
+            if (!email) {
+                console.warn("⚠️ Silakan masukkan email Anda.");
+                // Jika Anda menggunakan state: setNewsletterStatus('error: Silakan masukkan email Anda.');
+                return;
+            }
 
-              try {
-                const response = await fetch("http://localhost:5000/api/register", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    nama: "Newsletter Subscriber",
-                    email,
-                    whatsapp: "-",
-                    sekolah: "-",
-                    jurusan: "-",
-                    posisi: "Newsletter",
-                    link_cv: "-",
-                    motivasi: "Berlangganan newsletter",
-                  }),
+            try {
+                const response = await fetch("http://localhost:3000/api/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        // PERBAIKAN: Sinkronisasi Keys agar cocok dengan destructuring server.js
+                        nama: "Newsletter Subscriber",
+                        emailAktif: email, // HARUS emailAktif (sesuai server.js)
+                        whatsapp: "N/A", // HARUS whatsapp
+                        universitasSekolah: "N/A", // HARUS universitasSekolah
+                        jurusan: "N/A", // HARUS jurusan
+                        posisiMagang: "Newsletter Subscriber", // HARUS posisiMagang
+                        linkPortfolio: "N/A", // HARUS linkPortfolio
+                        // Motivasi tidak dikirim karena tidak ada di server.js Anda
+                    }),
                 });
 
                 const data = await response.json();
+                
                 if (response.ok) {
-                  alert("✅ " + data.message);
-                  e.target.reset();
+                    console.log("✅ Pendaftaran Newsletter Berhasil:", data.message);
+                    // Jika Anda menggunakan state: setNewsletterStatus('success: Berhasil!');
+                    e.target.reset();
                 } else {
-                  alert("⚠️ " + data.message);
+                    console.warn("⚠️ Gagal Mendaftar:", data.error || data.message);
+                    // Jika Anda menggunakan state: setNewsletterStatus(`error: ${data.error || 'Gagal mendaftar'}`);
                 }
-              } catch (err) {
-                console.error(err);
-                alert("❌ Gagal mengirim data ke server.");
-              }
-            }}
-          >
-            <InputGroup className="newsletter-input-group">
-              <Form.Control
+            } catch (err) {
+                console.error("❌ Gagal mengirim data ke server:", err);
+                // Jika Anda menggunakan state: setNewsletterStatus("error: Gagal koneksi ke server.");
+            }
+        }}
+    >
+        <InputGroup className="newsletter-input-group">
+            <Form.Control
                 name="email"
                 type="email"
                 placeholder="Masukkan email Anda"
                 aria-label="Email Address"
                 required
-              />
-              <Button type="submit" className="btn-orange">
-                <FaEnvelope size={16} />
-              </Button>
-            </InputGroup>
-          </Form>
-        </Col>
+            />
+            <Button type="submit" className="btn-orange">
+                {/* Asumsi FaEnvelope sudah di-import */}
+                <FaEnvelope size={16} /> 
+            </Button>
+        </InputGroup>
+    </Form>
+</Col>
 
       </Row>
 
@@ -250,6 +260,7 @@ const Home = () => {
     // STATE DAN HOOKS
     const [scrolled, setScrolled] = useState(false);
     const [showBackToTop, setShowBackToTop] = useState(false);
+    // CATATAN: State ini menggunakan KEY ID form (wa, universitas, portfolio), jadi harus di-map saat submit
     const [formData, setFormData] = useState({
         // Key state disesuaikan dengan ID form input
         nama: '', email: '', wa: '', universitas: '', jurusan: '', posisi: '', portfolio: '', motivation: '' 
@@ -270,37 +281,54 @@ const Home = () => {
         const isFormValid = requiredFields.every(field => formData[field].trim() !== '');
 
         if (!isFormValid) {
-            setSubmissionStatus('error');
+            // Mengatur pesan error jika ada kolom kosong
+            setSubmissionStatus('error: Harap lengkapi semua kolom yang wajib diisi.');
             setTimeout(() => setSubmissionStatus(null), 5000);
             return;
         }
 
         try {
-            // URL ini sudah benar, mengarah ke server Express Anda
-            const response = await fetch('http://localhost:5000/api/register', {
+            const response = await fetch("http://localhost:3000/api/register", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // PENTING: Kunci di sini HARUS SAMA dengan yang diekstrak di server.js (whatsapp, sekolah, link_cv, motivasi)
+                // PERBAIKAN KRITIS DI SINI:
+                // Kunci yang dikirim HARUS SAMA dengan yang diekstrak di server.js!
                 body: JSON.stringify({
-                    nama: formData.nama,
-                    email: formData.email,
-                    // MAPPING KE KEYS SERVER.JS
-                    whatsapp: formData.wa, // Server.js destructuring: whatsapp. Data dari state: wa
-                    sekolah: formData.universitas, // Server.js destructuring: sekolah. Data dari state: universitas
+                    // Kunci yang diekstrak di server.js (namaLengkap)
+                    nama: formData.nama, 
+                    
+                    // Kunci yang diekstrak di server.js (emailAktif)
+                    emailAktif: formData.email, 
+
+                    // Kunci yang diekstrak di server.js (nomorWhatsApp)
+                    whatsapp: formData.wa, 
+
+                    // Kunci yang diekstrak di server.js (universitasSekolah)
+                    universitasSekolah: formData.universitas, 
+                    
+                    // Kunci yang diekstrak di server.js (jurusan)
                     jurusan: formData.jurusan,
-                    posisi: formData.posisi,
-                    link_cv: formData.portfolio, // Server.js destructuring: link_cv. Data dari state: portfolio (Link CV)
-                    motivasi: formData.motivation, // Server.js destructuring: motivasi. Data dari state: motivation
+                    
+                    // Kunci yang diekstrak di server.js (posisiMagang)
+                    posisiMagang: formData.posisi,
+                    
+                    // Kunci yang diekstrak di server.js (linkPortfolio)
+                    linkPortfolio: formData.portfolio, 
+                    
+                    // Motivasi: Kunci ini tidak ada di destructuring server.js Anda, jadi
+                    // kita asumsikan di server.js Anda TIDAK MENYIMPANNYA. 
+                    // Kita akan HAPUS motivasi dari pengiriman untuk mencegah kebingungan validasi.
+                    // Jika Anda ingin menyimpannya, Anda HARUS menambahkannya di server.js dan models/User.js.
+                    // motivasi: formData.motivation // DIHAPUS, fokus ke field yang ada di server.js
                 }),
             });
 
             if (!response.ok) {
-                // Mencoba membaca pesan error dari server jika ada
                 const errorData = await response.json();
-                // Jika server.js merespon 400, pesan dari server akan muncul di sini
-                throw new Error(errorData.message || 'Gagal mengirim data'); 
+                // Mengambil pesan error dari server (misalnya 'Email sudah terdaftar.')
+                throw new Error(errorData.error || 'Gagal mengirim data'); 
             }
 
             const result = await response.json();
@@ -317,11 +345,10 @@ const Home = () => {
         } catch (error) {
             console.error('Error saat submit:', error);
             // Menampilkan pesan error khusus dari server jika ada
-            setSubmissionStatus(`error: ${error.message.includes('Gagal mengirim data') ? '' : error.message}`); 
+            setSubmissionStatus(`error: ${error.message}`); 
         } finally {
             setTimeout(() => setSubmissionStatus(null), 5000);
         }
-
     };
 
 
